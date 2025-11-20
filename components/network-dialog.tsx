@@ -36,7 +36,7 @@ const NETWORK_CHOICES = [
 ]
 
 const API_CHOICES = [
-  { value: "connect", label: "Turaincash Connect" },
+  { value: "connect", label: "Africash Connect" },
 ]
 
 interface NetworkDialogProps {

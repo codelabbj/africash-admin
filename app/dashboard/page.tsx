@@ -50,8 +50,8 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">Tableau de Bord</h2>
-        <p className="text-muted-foreground">Bienvenue sur le tableau de bord administrateur TURAINCASH</p>
+        <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">Tableau de Bord</h2>
+        <p className="text-muted-foreground">Bienvenue sur le tableau de bord administrateur Africash</p>
       </div>
 
       {isError && (
@@ -62,13 +62,14 @@ export default function DashboardPage() {
 
       {/* Main Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className="relative overflow-hidden border-primary/30">
+          <div className="absolute top-0 right-0 w-20 h-20 bg-primary/10 rounded-full blur-2xl"></div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
             <CardTitle className="text-sm font-medium">Total Utilisateurs</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <Users className="h-4 w-4 text-primary" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
+          <CardContent className="relative z-10">
+            <div className="text-2xl font-bold text-primary">
               {isLoading ? "…" : formatNumber(stats?.total_users)}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -79,13 +80,14 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className="relative overflow-hidden border-primary/30">
+          <div className="absolute top-0 right-0 w-20 h-20 bg-primary/10 rounded-full blur-2xl"></div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
             <CardTitle className="text-sm font-medium">Transactions Total</CardTitle>
-            <ArrowLeftRight className="h-4 w-4 text-muted-foreground" />
+            <ArrowLeftRight className="h-4 w-4 text-primary" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
+          <CardContent className="relative z-10">
+            <div className="text-2xl font-bold text-primary">
               {isLoading ? "…" : formatNumber(stats?.total_transactions)}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -94,13 +96,14 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className="relative overflow-hidden border-primary/30">
+          <div className="absolute top-0 right-0 w-20 h-20 bg-primary/10 rounded-full blur-2xl"></div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
             <CardTitle className="text-sm font-medium">Solde Net</CardTitle>
-            <Wallet className="h-4 w-4 text-muted-foreground" />
+            <Wallet className="h-4 w-4 text-primary" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
+          <CardContent className="relative z-10">
+            <div className="text-2xl font-bold text-primary">
               {isLoading ? "…" : formatCurrency(volume?.net_volume)}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -113,13 +116,14 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className="relative overflow-hidden border-primary/30">
+          <div className="absolute top-0 right-0 w-20 h-20 bg-primary/10 rounded-full blur-2xl"></div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
             <CardTitle className="text-sm font-medium">Total Bonus</CardTitle>
-            <Gift className="h-4 w-4 text-muted-foreground" />
+            <Gift className="h-4 w-4 text-primary" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
+          <CardContent className="relative z-10">
+            <div className="text-2xl font-bold text-primary">
               {isLoading ? "…" : formatCurrency(stats?.total_bonus)}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -132,8 +136,8 @@ export default function DashboardPage() {
       {/* Bot Statistics */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Bot className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-primary">
+            <Bot className="h-5 w-5 text-primary" />
             Statistiques Bot
           </CardTitle>
         </CardHeader>
@@ -170,8 +174,8 @@ export default function DashboardPage() {
       {/* Volume Transactions */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-primary">
+            <TrendingUp className="h-5 w-5 text-primary" />
             Volume des Transactions
           </CardTitle>
         </CardHeader>
@@ -249,8 +253,8 @@ export default function DashboardPage() {
       {/* Transactions by App */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Network className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-primary">
+            <Network className="h-5 w-5 text-primary" />
             Transactions par Application ({networksCount})
           </CardTitle>
         </CardHeader>
@@ -286,8 +290,8 @@ export default function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <UserPlus className="h-5 w-5" />
+            <CardTitle className="flex items-center gap-2 text-primary">
+              <UserPlus className="h-5 w-5 text-primary" />
               Croissance des Utilisateurs
             </CardTitle>
           </CardHeader>
@@ -328,8 +332,8 @@ export default function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Share2 className="h-5 w-5" />
+            <CardTitle className="flex items-center gap-2 text-primary">
+              <Share2 className="h-5 w-5 text-primary" />
               Système de Parrainage
             </CardTitle>
           </CardHeader>
@@ -391,7 +395,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Publicités</CardTitle>
-            <Megaphone className="h-4 w-4 text-muted-foreground" />
+            <Megaphone className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -408,7 +412,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Coupons</CardTitle>
-            <Ticket className="h-4 w-4 text-muted-foreground" />
+            <Ticket className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
