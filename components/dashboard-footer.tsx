@@ -9,7 +9,7 @@ export function DashboardFooter() {
         <p className="text-sm text-muted-foreground">
           Développé par{" "}
           <Link
-            href="https://wa.me/22947030588"
+            href="https://codelab.bj/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-primary font-semibold hover:text-primary/80 hover:underline transition-colors"

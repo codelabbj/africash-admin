@@ -102,7 +102,6 @@ export interface CreateWithdrawalInput {
 }
 
 export interface ChangeStatusInput {
-  status: "accept" | "reject" | "pending"
   reference: string
 }
 
@@ -157,6 +156,21 @@ export function useChangeTransactionStatus() {
     onSuccess: () => {
       toast.success("Transaction status updated successfully!")
       queryClient.invalidateQueries({ queryKey: ["transactions"] })
+    },
+  })
+}
+
+export function useCheckTransactionStatus() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (reference: string) => {
+      const res = await api.get(`/mobcash/show-transaction-status?reference=${reference}`)
+      return res.data
+    },
+    onSuccess: (data, reference) => {
+      queryClient.invalidateQueries({ queryKey: ["transactions"] })
+      return data
     },
   })
 }

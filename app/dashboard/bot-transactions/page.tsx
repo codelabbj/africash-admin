@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useBotTransactions, type BotTransaction, type BotTransactionFilters } from "@/hooks/useBotTransactions"
+import { useBotTransactions, useCheckBotTransactionStatus, type BotTransaction, type BotTransactionFilters } from "@/hooks/useBotTransactions"
 import { useNetworks } from "@/hooks/useNetworks"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -10,10 +10,10 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, Plus, Search, RefreshCw, Copy } from "lucide-react"
+import { Loader2, Plus, Search, RefreshCw, Copy, CheckCircle } from "lucide-react"
 import { toast } from "react-hot-toast"
 import { CreateBotTransactionDialog } from "@/components/create-bot-transaction-dialog"
-import { ChangeBotStatusDialog } from "@/components/change-bot-status-dialog"
+import { ChangeBotStatusDialog, BotTransactionStatusDialog } from "@/components/change-bot-status-dialog"
 
 export default function BotTransactionsPage() {
   const [filters, setFilters] = useState<BotTransactionFilters>({
@@ -23,14 +23,36 @@ export default function BotTransactionsPage() {
 
   const { data: transactionsData, isLoading } = useBotTransactions(filters)
   const { data: networks } = useNetworks()
+  const checkStatusMutation = useCheckBotTransactionStatus()
 
   const [createDialogOpen, setCreateDialogOpen] = useState(false)
   const [statusDialogOpen, setStatusDialogOpen] = useState(false)
+  const [transactionStatusDialogOpen, setTransactionStatusDialogOpen] = useState(false)
   const [selectedTransaction, setSelectedTransaction] = useState<BotTransaction | null>(null)
+  const [checkingStatus, setCheckingStatus] = useState<number | null>(null)
+  const [statusData, setStatusData] = useState<any>(null)
 
   const handleChangeStatus = (transaction: BotTransaction) => {
     setSelectedTransaction(transaction)
     setStatusDialogOpen(true)
+  }
+
+  const handleCheckStatus = async (transaction: BotTransaction) => {
+    setCheckingStatus(transaction.id)
+    setTransactionStatusDialogOpen(true)
+    try {
+      const data = await checkStatusMutation.mutateAsync(transaction.reference)
+      setStatusData(data)
+    } catch (error) {
+      setStatusData(null)
+    } finally {
+      setCheckingStatus(null)
+    }
+  }
+
+  const shouldShowCheckStatus = (status: string) => {
+    const statusLower = status.toLowerCase()
+    return statusLower === "pending" || statusLower === "error" || statusLower === "fail" || statusLower === "failed"
   }
 
   const getStatusColor = (status: string) => {
@@ -322,10 +344,27 @@ export default function BotTransactionsPage() {
                       </TableCell>
                       <TableCell>{new Date(transaction.created_at).toLocaleDateString()}</TableCell>
                       <TableCell className="text-right">
-                        <Button variant="ghost" size="sm" onClick={() => handleChangeStatus(transaction)}>
-                          <RefreshCw className="h-4 w-4 mr-1" />
-                          Changer Statut
-                        </Button>
+                        <div className="flex items-center justify-end gap-2">
+                          {shouldShowCheckStatus(transaction.status) && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleCheckStatus(transaction)}
+                              disabled={checkingStatus === transaction.id}
+                            >
+                              {checkingStatus === transaction.id ? (
+                                <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                              ) : (
+                                <CheckCircle className="h-4 w-4 mr-1" />
+                              )}
+                              Vérifier Statut
+                            </Button>
+                          )}
+                          <Button variant="ghost" size="sm" onClick={() => handleChangeStatus(transaction)}>
+                            <RefreshCw className="h-4 w-4 mr-1" />
+                            Changer Statut
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -367,6 +406,12 @@ export default function BotTransactionsPage() {
         open={statusDialogOpen}
         onOpenChange={setStatusDialogOpen}
         transaction={selectedTransaction}
+      />
+      <BotTransactionStatusDialog
+        open={transactionStatusDialogOpen}
+        onOpenChange={setTransactionStatusDialogOpen}
+        statusData={statusData}
+        isLoading={checkingStatus !== null}
       />
     </div>
   )
