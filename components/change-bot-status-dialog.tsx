@@ -46,26 +46,26 @@ export function ChangeBotStatusDialog({ open, onOpenChange, transaction }: Chang
           </DialogDescription>
         </DialogHeader>
 
-        <DialogFooter>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-            disabled={changeStatus.isPending}
-          >
-            Annuler
-          </Button>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+              disabled={changeStatus.isPending}
+            >
+              Annuler
+            </Button>
           <Button onClick={handleConfirm} disabled={changeStatus.isPending}>
-            {changeStatus.isPending ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              {changeStatus.isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Traitement...
-              </>
-            ) : (
+                </>
+              ) : (
               "Confirmer"
-            )}
-          </Button>
-        </DialogFooter>
+              )}
+            </Button>
+          </DialogFooter>
       </DialogContent>
     </Dialog>
   )

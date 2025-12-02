@@ -360,10 +360,10 @@ export default function BotTransactionsPage() {
                               Vérifier Statut
                             </Button>
                           )}
-                          <Button variant="ghost" size="sm" onClick={() => handleChangeStatus(transaction)}>
-                            <RefreshCw className="h-4 w-4 mr-1" />
-                            Changer Statut
-                          </Button>
+                        <Button variant="ghost" size="sm" onClick={() => handleChangeStatus(transaction)}>
+                          <RefreshCw className="h-4 w-4 mr-1" />
+                          Changer Statut
+                        </Button>
                         </div>
                       </TableCell>
                     </TableRow>

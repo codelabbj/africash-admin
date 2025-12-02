@@ -47,6 +47,8 @@ export function SettingsDialog({ open, onOpenChange, settings }: SettingsDialogP
     telegram: null,
     moov_marchand_phone: null,
     orange_marchand_phone: null,
+    bf_orange_marchand_phone: null,
+    bf_moov_marchand_phone: null,
   })
 
   useEffect(() => {
@@ -70,6 +72,8 @@ export function SettingsDialog({ open, onOpenChange, settings }: SettingsDialogP
         telegram: settings.telegram,
         moov_marchand_phone: settings.moov_marchand_phone,
         orange_marchand_phone: settings.orange_marchand_phone,
+        bf_orange_marchand_phone: settings.bf_orange_marchand_phone,
+        bf_moov_marchand_phone: settings.bf_moov_marchand_phone,
       })
     }
   }, [settings])
@@ -321,6 +325,28 @@ export function SettingsDialog({ open, onOpenChange, settings }: SettingsDialogP
                     value={formData.orange_marchand_phone || ""}
                     onChange={(e) => setFormData({ ...formData, orange_marchand_phone: e.target.value || null })}
                     placeholder="2250700000000"
+                    disabled={updateSettings.isPending}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="bf_orange_marchand_phone">Téléphone Marchand Orange BF</Label>
+                  <Input
+                    id="bf_orange_marchand_phone"
+                    value={formData.bf_orange_marchand_phone || ""}
+                    onChange={(e) => setFormData({ ...formData, bf_orange_marchand_phone: e.target.value || null })}
+                    placeholder="2260700000000"
+                    disabled={updateSettings.isPending}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="bf_moov_marchand_phone">Téléphone Marchand Moov BF</Label>
+                  <Input
+                    id="bf_moov_marchand_phone"
+                    value={formData.bf_moov_marchand_phone || ""}
+                    onChange={(e) => setFormData({ ...formData, bf_moov_marchand_phone: e.target.value || null })}
+                    placeholder="2260700000000"
                     disabled={updateSettings.isPending}
                   />
                 </div>
