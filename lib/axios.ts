@@ -73,26 +73,55 @@ api.interceptors.response.use(
       }
     }
 
-    // 🌍 Smart language-aware error display
+    // 🌍 Smart language-aware error display with specific status code handling
     const userLang = navigator.language.startsWith("fr") ? "fr" : "en"
-    const fallback =
-      userLang === "fr"
-        ? "Une erreur est survenue. Veuillez réessayer."
-        : "An unexpected error occurred. Please try again."
+    const statusCode = error.response?.status
 
-    const backendMsg =
-      error.response?.data?.details ||
-      error.response?.data?.detail ||
-      error.response?.data?.error ||
-      error.response?.data?.message ||
-      (typeof error.response?.data === "string" ? error.response.data : fallback)
+    let displayMessage: string
 
-    const backendLang = detectLang(backendMsg)
+    // Handle specific HTTP status codes with French messages
+    if (statusCode >= 500) {
+      // Server errors (500+)
+      displayMessage = "Erreur interne du serveur. Veuillez réessayer plus tard."
+    } else if (statusCode === 404) {
+      // Not found errors
+      displayMessage = "Ressource introuvable. Veuillez vérifier vos données."
+    } else if (statusCode >= 400 && statusCode < 500) {
+      // Client errors (400-499) - use backend message if available
+      const backendMsg =
+        error.response?.data?.details ||
+        error.response?.data?.detail ||
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        (typeof error.response?.data === "string" ? error.response.data : null)
+
+      if (backendMsg && backendMsg.trim()) {
+        displayMessage = backendMsg
+      } else {
+        // Fallback for client errors without specific message
+        displayMessage = "Erreur de requête. Veuillez vérifier vos données et réessayer."
+      }
+    } else {
+      // Network errors or other unrecognized errors
+      const backendMsg =
+        error.response?.data?.details ||
+        error.response?.data?.detail ||
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        (typeof error.response?.data === "string" ? error.response.data : null)
+
+      if (backendMsg && backendMsg.trim()) {
+        displayMessage = backendMsg
+      } else {
+        // Fallback for network/other errors
+        displayMessage = "Erreur de connexion. Veuillez vérifier votre connexion internet et réessayer."
+      }
+    }
 
     // Don't show toast for authentication errors that are being handled or permission errors (redirecting)
-    const isPermissionError = backendMsg.includes("You do not have permission to perform this action")
+    const isPermissionError = displayMessage.includes("You do not have permission to perform this action")
     if ((error.response?.status !== 401 || !original._retry) && !isPermissionError) {
-      toast.error(backendMsg, {
+      toast.error(displayMessage, {
         style: {
           direction: "ltr",
           fontFamily: "sans-serif",

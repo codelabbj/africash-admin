@@ -98,7 +98,7 @@ export function useCreateDeposit() {
       queryClient.invalidateQueries({ queryKey: ["caisses"] })
     },
     onError: (error: any) => {
-      toast.error(error?.response?.data?.detail || "Erreur lors de la création du dépôt")
+      // Let the global axios interceptor handle the error message
     },
   })
 }

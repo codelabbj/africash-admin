@@ -17,7 +17,15 @@ export default class ErrorBoundary extends React.Component<{ children: React.Rea
   }
 
   static getDerivedStateFromError(error: any) {
-    const msg = error?.response?.data?.detail || error?.message || "An unexpected error occurred."
+    let msg: string
+
+    if (error?.response?.status >= 500) {
+      msg = "Erreur interne du serveur. Veuillez réessayer plus tard."
+    } else if (error?.response?.status === 404) {
+      msg = "Ressource introuvable. Veuillez vérifier vos données."
+    } else {
+      msg = error?.response?.data?.detail || error?.message || "Une erreur inattendue s'est produite."
+    }
     return { hasError: true, message: msg }
   }
 
