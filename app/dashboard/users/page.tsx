@@ -61,7 +61,6 @@ export default function UsersPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>ID</TableHead>
                   <TableHead>Nom d'utilisateur</TableHead>
                   <TableHead>Nom</TableHead>
                   <TableHead>Email</TableHead>
@@ -74,7 +73,6 @@ export default function UsersPage() {
               <TableBody>
                 {usersData.results.map((user) => (
                   <TableRow key={user.id}>
-                    <TableCell className="font-medium font-mono text-xs">{user.id}</TableCell>
                     <TableCell>{user.username}</TableCell>
                     <TableCell>
                       {user.first_name} {user.last_name}

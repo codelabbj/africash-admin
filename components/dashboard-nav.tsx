@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import {
   Users,
+  User,
   Network,
   Phone,
   Award as IdCard,
@@ -23,6 +24,7 @@ import {
 const navItems = [
   { href: "/dashboard", label: "Tableau de Bord", icon: LayoutDashboard },
   { href: "/dashboard/bot-users", label: "Utilisateurs Bot", icon: Users },
+  { href: "/dashboard/users", label: "Utilisateurs", icon: User },
   { href: "/dashboard/networks", label: "Réseaux", icon: Network },
   { href: "/dashboard/telephones", label: "Téléphones", icon: Phone },
   { href: "/dashboard/user-app-ids", label: "IDs Utilisateur", icon: IdCard },
