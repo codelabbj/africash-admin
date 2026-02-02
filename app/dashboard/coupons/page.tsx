@@ -9,7 +9,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Loader2, Plus, Pencil, Trash2, Search } from "lucide-react"
+import { Loader2, Plus, Pencil, Trash2, Search, MoreVertical } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { CouponDialog } from "@/components/coupon-dialog"
 import {
   AlertDialog,
@@ -149,26 +155,39 @@ export default function CouponsPage() {
                 </TableHeader>
                 <TableBody>
                   {couponsData.results.map((coupon) => (
-                  <TableRow key={coupon.id}>
-                    <TableCell className="font-medium">{coupon.id}</TableCell>
-                    <TableCell className="font-mono">{coupon.code}</TableCell>
-                    <TableCell>
-                      {coupon.bet_app_details?.name || (
-                        <span className="text-muted-foreground text-xs font-mono">{coupon.bet_app}</span>
-                      )}
-                    </TableCell>
-                    <TableCell>{new Date(coupon.created_at).toLocaleDateString()}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(coupon)}>
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(coupon)}>
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
+                    <TableRow key={coupon.id}>
+                      <TableCell className="font-medium">{coupon.id}</TableCell>
+                      <TableCell className="font-mono">{coupon.code}</TableCell>
+                      <TableCell>
+                        {coupon.bet_app_details?.name || (
+                          <span className="text-muted-foreground text-xs font-mono">{coupon.bet_app}</span>
+                        )}
+                      </TableCell>
+                      <TableCell>{new Date(coupon.created_at).toLocaleDateString()}</TableCell>
+                      <TableCell className="text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <MoreVertical className="h-4 w-4" />
+                              <span className="sr-only">Ouvrir le menu</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => handleEdit(coupon)}>
+                              <Pencil className="h-4 w-4 mr-2" />
+                              Modifier
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleDelete(coupon)}
+                              className="text-destructive focus:text-destructive"
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Supprimer
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
                   ))}
                 </TableBody>
               </Table>

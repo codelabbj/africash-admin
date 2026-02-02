@@ -8,7 +8,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Loader2, Plus, Pencil, Trash2 } from "lucide-react"
+import { Loader2, Plus, Pencil, Trash2, MoreVertical } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { AdvertisementDialog } from "@/components/advertisement-dialog"
 import {
   AlertDialog,
@@ -129,36 +135,49 @@ export default function AdvertisementsPage() {
                 </TableHeader>
                 <TableBody>
                   {advertisementsData.results.map((advertisement) => (
-                  <TableRow key={advertisement.id}>
-                    <TableCell className="font-medium">{advertisement.id}</TableCell>
-                    <TableCell>
-                      {advertisement.image ? (
-                        <img
-                          src={advertisement.image}
-                          alt={`Advertisement ${advertisement.id}`}
-                          className="h-16 w-16 object-cover rounded border"
-                        />
-                      ) : (
-                        <span className="text-muted-foreground text-sm">Aucune image</span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={advertisement.enable ? "default" : "secondary"}>
-                        {advertisement.enable ? "Actif" : "Inactif"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{new Date(advertisement.created_at).toLocaleDateString()}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(advertisement)}>
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(advertisement)}>
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
+                    <TableRow key={advertisement.id}>
+                      <TableCell className="font-medium">{advertisement.id}</TableCell>
+                      <TableCell>
+                        {advertisement.image ? (
+                          <img
+                            src={advertisement.image}
+                            alt={`Advertisement ${advertisement.id}`}
+                            className="h-16 w-16 object-cover rounded border"
+                          />
+                        ) : (
+                          <span className="text-muted-foreground text-sm">Aucune image</span>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={advertisement.enable ? "default" : "secondary"}>
+                          {advertisement.enable ? "Actif" : "Inactif"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>{new Date(advertisement.created_at).toLocaleDateString()}</TableCell>
+                      <TableCell className="text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <MoreVertical className="h-4 w-4" />
+                              <span className="sr-only">Ouvrir le menu</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => handleEdit(advertisement)}>
+                              <Pencil className="h-4 w-4 mr-2" />
+                              Modifier
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleDelete(advertisement)}
+                              className="text-destructive focus:text-destructive"
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Supprimer
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
                   ))}
                 </TableBody>
               </Table>

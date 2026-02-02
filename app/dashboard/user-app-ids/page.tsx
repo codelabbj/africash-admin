@@ -10,7 +10,13 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, Plus, Pencil, Trash2, Copy, Search } from "lucide-react"
+import { Loader2, Plus, Pencil, Trash2, Copy, Search, MoreVertical } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { toast } from "react-hot-toast"
 import { UserAppIdDialog } from "@/components/user-app-id-dialog"
 import {
@@ -161,36 +167,49 @@ export default function UserAppIdsPage() {
                 </TableHeader>
                 <TableBody>
                   {userAppIdsData.results.map((userAppId) => (
-                  <TableRow key={userAppId.id}>
-                    <TableCell className="font-medium">{userAppId.id}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline">{userAppId.user_app_id}</Badge>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-6 w-6"
-                          onClick={() => handleCopy(userAppId.user_app_id)}
-                          title="Copier l'ID"
-                        >
-                          <Copy className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                    <TableCell>{userAppId.app_details?.name || userAppId.app_name}</TableCell>
-                    <TableCell>{userAppId.telegram_user || "-"}</TableCell>
-                    <TableCell>{new Date(userAppId.created_at).toLocaleDateString()}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(userAppId)}>
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(userAppId)}>
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
+                    <TableRow key={userAppId.id}>
+                      <TableCell className="font-medium">{userAppId.id}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline">{userAppId.user_app_id}</Badge>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-6 w-6"
+                            onClick={() => handleCopy(userAppId.user_app_id)}
+                            title="Copier l'ID"
+                          >
+                            <Copy className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                      <TableCell>{userAppId.app_details?.name || userAppId.app_name}</TableCell>
+                      <TableCell>{userAppId.telegram_user || "-"}</TableCell>
+                      <TableCell>{new Date(userAppId.created_at).toLocaleDateString()}</TableCell>
+                      <TableCell className="text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <MoreVertical className="h-4 w-4" />
+                              <span className="sr-only">Ouvrir le menu</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => handleEdit(userAppId)}>
+                              <Pencil className="h-4 w-4 mr-2" />
+                              Modifier
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleDelete(userAppId)}
+                              className="text-destructive focus:text-destructive"
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Supprimer
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
                   ))}
                 </TableBody>
               </Table>

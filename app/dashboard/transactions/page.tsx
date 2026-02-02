@@ -10,7 +10,13 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, Plus, Search, RefreshCw, Copy, CheckCircle } from "lucide-react"
+import { Loader2, Plus, Search, RefreshCw, Copy, CheckCircle, MoreVertical } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { toast } from "react-hot-toast"
 import { CreateTransactionDialog } from "@/components/create-transaction-dialog"
 import { ChangeStatusDialog, TransactionStatusDialog } from "@/components/change-status-dialog"
@@ -337,27 +343,33 @@ export default function TransactionsPage() {
                       </TableCell>
                       <TableCell>{new Date(transaction.created_at).toLocaleDateString()}</TableCell>
                       <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          {shouldShowCheckStatus(transaction.status) && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleCheckStatus(transaction)}
-                              disabled={checkingStatus === transaction.id}
-                            >
-                              {checkingStatus === transaction.id ? (
-                                <Loader2 className="h-4 w-4 mr-1 animate-spin" />
-                              ) : (
-                                <CheckCircle className="h-4 w-4 mr-1" />
-                              )}
-                              Vérifier Statut
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <MoreVertical className="h-4 w-4" />
+                              <span className="sr-only">Ouvrir le menu</span>
                             </Button>
-                          )}
-                        <Button variant="ghost" size="sm" onClick={() => handleChangeStatus(transaction)}>
-                          <RefreshCw className="h-4 w-4 mr-1" />
-                          Changer Statut
-                        </Button>
-                        </div>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            {shouldShowCheckStatus(transaction.status) && (
+                              <DropdownMenuItem
+                                onClick={() => handleCheckStatus(transaction)}
+                                disabled={checkingStatus === transaction.id}
+                              >
+                                {checkingStatus === transaction.id ? (
+                                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                ) : (
+                                  <CheckCircle className="h-4 w-4 mr-2" />
+                                )}
+                                Vérifier Statut
+                              </DropdownMenuItem>
+                            )}
+                            <DropdownMenuItem onClick={() => handleChangeStatus(transaction)}>
+                              <RefreshCw className="h-4 w-4 mr-2" />
+                              Changer Statut
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </TableCell>
                     </TableRow>
                   ))}

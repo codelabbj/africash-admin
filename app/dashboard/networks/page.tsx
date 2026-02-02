@@ -9,7 +9,13 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, Plus, Pencil, Trash2, Search } from "lucide-react"
+import { Loader2, Plus, Pencil, Trash2, Search, MoreVertical } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { NetworkDialog } from "@/components/network-dialog"
 import {
   AlertDialog,
@@ -147,40 +153,53 @@ export default function NetworksPage() {
                 </TableHeader>
                 <TableBody>
                   {networksData.results.map((network) => (
-                  <TableRow key={network.id}>
-                    <TableCell className="font-medium">{network.name}</TableCell>
-                    <TableCell>{network.public_name}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline">
-                        {network.country_code} (+{network.indication})
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={network.enable ? "default" : "secondary"}>
-                        {network.enable ? "Actif" : "Inactif"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={network.active_for_deposit ? "default" : "secondary"}>
-                        {network.active_for_deposit ? "Oui" : "Non"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={network.active_for_with ? "default" : "secondary"}>
-                        {network.active_for_with ? "Oui" : "Non"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(network)}>
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(network)}>
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
+                    <TableRow key={network.id}>
+                      <TableCell className="font-medium">{network.name}</TableCell>
+                      <TableCell>{network.public_name}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline">
+                          {network.country_code} (+{network.indication})
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={network.enable ? "default" : "secondary"}>
+                          {network.enable ? "Actif" : "Inactif"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={network.active_for_deposit ? "default" : "secondary"}>
+                          {network.active_for_deposit ? "Oui" : "Non"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={network.active_for_with ? "default" : "secondary"}>
+                          {network.active_for_with ? "Oui" : "Non"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <MoreVertical className="h-4 w-4" />
+                              <span className="sr-only">Ouvrir le menu</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => handleEdit(network)}>
+                              <Pencil className="h-4 w-4 mr-2" />
+                              Modifier
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleDelete(network)}
+                              className="text-destructive focus:text-destructive"
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Supprimer
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
                   ))}
                 </TableBody>
               </Table>

@@ -9,7 +9,13 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Loader2, Plus, Pencil, Trash2, Search } from "lucide-react"
+import { Loader2, Plus, Pencil, Trash2, Search, MoreVertical } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { PlatformDialog } from "@/components/platform-dialog"
 import { useDeletePlatform, type Platform } from "@/hooks/usePlatforms"
 import {
@@ -148,31 +154,44 @@ export default function PlatformsPage() {
                 </TableHeader>
                 <TableBody>
                   {platformsData.results.map((platform) => (
-                  <TableRow key={platform.id}>
-                    <TableCell className="font-medium">{platform.name}</TableCell>
-                    <TableCell>
-                      <Badge variant={platform.enable ? "default" : "secondary"}>
-                        {platform.enable ? "Actif" : "Inactif"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{platform.minimun_deposit} FCFA</TableCell>
-                    <TableCell>{platform.max_deposit} FCFA</TableCell>
-                    <TableCell>{platform.minimun_with} FCFA</TableCell>
-                    <TableCell>{platform.max_win} FCFA</TableCell>
-                    <TableCell>
-                      {platform.city && platform.street ? `${platform.city}, ${platform.street}` : "-"}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(platform)}>
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(platform)}>
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
+                    <TableRow key={platform.id}>
+                      <TableCell className="font-medium">{platform.name}</TableCell>
+                      <TableCell>
+                        <Badge variant={platform.enable ? "default" : "secondary"}>
+                          {platform.enable ? "Actif" : "Inactif"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>{platform.minimun_deposit} FCFA</TableCell>
+                      <TableCell>{platform.max_deposit} FCFA</TableCell>
+                      <TableCell>{platform.minimun_with} FCFA</TableCell>
+                      <TableCell>{platform.max_win} FCFA</TableCell>
+                      <TableCell>
+                        {platform.city && platform.street ? `${platform.city}, ${platform.street}` : "-"}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <MoreVertical className="h-4 w-4" />
+                              <span className="sr-only">Ouvrir le menu</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => handleEdit(platform)}>
+                              <Pencil className="h-4 w-4 mr-2" />
+                              Modifier
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleDelete(platform)}
+                              className="text-destructive focus:text-destructive"
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Supprimer
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
                   ))}
                 </TableBody>
               </Table>
